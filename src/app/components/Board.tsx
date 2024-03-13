@@ -12,6 +12,13 @@ const Board = (props: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // randomize catan numbers and tiles
+    BASE_CATAN_NUMBERS.sort(() => Math.random() - 0.5);
+    console.log(BASE_CATAN_NUMBERS);
+
+    BASE_CATAN_TILES.sort(() => Math.random() - 0.5);
+    console.log(BASE_CATAN_NUMBERS);
+
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext("2d");
@@ -59,8 +66,12 @@ const Board = (props: Props) => {
           let y = startY;
           let baseBoardIndex = 0;
           let numCols = BASE_BOARD_LAYOUT[baseBoardIndex];
-          for (let i = 0; i < BASE_CATAN_TILES.length; i++) {
-            const pip = BASE_CATAN_NUMBERS[i];
+
+          for (let i = 0, n = 0; i < BASE_CATAN_TILES.length; i++) {
+            let pip = -1;
+            if (BASE_CATAN_TILES[i] !== CATAN_TILE_TYPES.DESERT) {
+              pip = BASE_CATAN_NUMBERS[n++];
+            }
             drawTile(x, y, BASE_CATAN_TILES[i], pip);
             if (i === 2 || i === 6 || i === 11 || i === 15 || i === 18) {
               const newNumCols = BASE_BOARD_LAYOUT[++baseBoardIndex];
